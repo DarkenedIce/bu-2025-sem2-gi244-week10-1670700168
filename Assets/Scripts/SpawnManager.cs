@@ -18,13 +18,16 @@ public class SpawnManager : MonoBehaviour
 
         InvokeRepeating(nameof(SpawnObstacle), startDelay, repeatRate);
 
-        GameObject.Find("Player").GetComponent<PlayerController>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     void SpawnObstacle()
     {
-        obstacleIndex = Random.Range(0, obstaclePrefab.Length);
+        if (!playerController.gameOver)
+        {
+            obstacleIndex = Random.Range(0, obstaclePrefab.Length);
 
-        Instantiate(obstaclePrefab[obstacleIndex], spawnPos, obstaclePrefab[obstacleIndex].transform.rotation);
+            Instantiate(obstaclePrefab[obstacleIndex], spawnPos, obstaclePrefab[obstacleIndex].transform.rotation);
+        }
     }
 }
