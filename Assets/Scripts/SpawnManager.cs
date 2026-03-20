@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefab;
     public Vector3 spawnPos = new(25, 0, 0);
 
     public float startDelay = 2;
     public float repeatRate = 2;
 
+    private int obstacleIndex;
     private PlayerController playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,6 +23,8 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnObstacle()
     {
-        Instantiate(obstaclePrefab, spawnPos, obstaclePrefab.transform.rotation);
+        obstacleIndex = Random.Range(0, obstaclePrefab.Length);
+
+        Instantiate(obstaclePrefab[obstacleIndex], spawnPos, obstaclePrefab[obstacleIndex].transform.rotation);
     }
 }
