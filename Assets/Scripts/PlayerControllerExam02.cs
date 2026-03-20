@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private InputAction jumpAction;
     private bool isOnGround = true;
+    private bool doubleJumped = false;
 
     private Animator playerAnim;
     private AudioSource playerAudio;
@@ -48,6 +49,13 @@ public class PlayerController : MonoBehaviour
             dirtParticle.Stop();
             playerAudio.PlayOneShot(jumpSfx);
         }
+        else if (jumpAction.triggered && !doubleJumped && !gameOver)
+        {
+            rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
+            doubleJumped = true;
+            playerAnim.SetTrigger("Jump_trig");
+            playerAudio.PlayOneShot(jumpSfx);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -55,6 +63,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            doubleJumped = false;
             dirtParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
