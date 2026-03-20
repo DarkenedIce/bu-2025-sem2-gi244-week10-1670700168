@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private InputAction jumpAction;
+    private InputAction sprintAction;
     private bool isOnGround = true;
     private bool doubleJumped = false;
 
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAudio;
 
     public bool gameOver = false;
+    public bool isDashing = false;
 
     void Awake()
     {
@@ -34,8 +36,10 @@ public class PlayerController : MonoBehaviour
         Physics.gravity *= gravityModifier;
 
         jumpAction = InputSystem.actions.FindAction("Jump");
+        sprintAction = InputSystem.actions.FindAction("Sprint");
 
         gameOver = false;
+        isDashing = false;
     }
 
     // Update is called once per frame
@@ -55,6 +59,15 @@ public class PlayerController : MonoBehaviour
             doubleJumped = true;
             playerAnim.SetTrigger("Jump_trig");
             playerAudio.PlayOneShot(jumpSfx);
+        }
+
+        if (sprintAction.inProgress && !isDashing && !gameOver)
+        {
+            isDashing= true;
+        }
+        else if (isDashing && !gameOver)
+        {
+            isDashing= false;
         }
     }
 
